@@ -79,14 +79,14 @@ const ButtonModal: React.FC<{}> = ({ }) => {
         }
         else {
             if (typeof card_id === 'number' && typeof message_id === 'number') {
-                if (globalState.cards[card_id].message[message_id].type_message === 'button') {
+                if (globalState.cards[card_id].messages[message_id].type_message === 'button') {
                     let buttons: Button = {
                         type_message: 'button',
                         type_content: 'answer',
-                        id: globalState.cards[card_id].message[message_id].id,
-                        step: globalState.cards[card_id].message[message_id].step,
+                        id: globalState.cards[card_id].messages[message_id].id,
+                        step: globalState.cards[card_id].messages[message_id].step,
                         contentButton: [
-                            ...globalState.cards[card_id].message[message_id].contentButton
+                            ...globalState.cards[card_id].messages[message_id].contentButton
                         ],
                     }
                     // globalState.cards[card_id].message[message_id]

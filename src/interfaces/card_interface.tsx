@@ -1,6 +1,6 @@
 export interface CardProps {
     id: number,
-    message: Array<Video | Text | Image | Button | Gallery | Input>,
+    messages: Array<Video | Text | Image | Button | Gallery | Input>,
     position: Position
 }
 

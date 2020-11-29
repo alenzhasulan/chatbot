@@ -49,14 +49,14 @@ export const removeEmptyMessage = (
     let newCards = [...store.state.cards]
     let card_index = newCards.findIndex(i => i.id === card_id)
     if (card_index >= 0) {
-        let message_index = newCards[card_index].message.findIndex(i => i.id === message_id)
-        newCards[card_index].message.splice(message_index, 1);
-        newCards[card_index].message.map((item, index) => {
+        let message_index = newCards[card_index].messages.findIndex(i => i.id === message_id)
+        newCards[card_index].messages.splice(message_index, 1);
+        newCards[card_index].messages.map((item, index) => {
             item.id = index
             item.step = index
         })
-        if (newCards[card_index].message.length === 0) {
-            newCards[card_index].message.push({
+        if (newCards[card_index].messages.length === 0) {
+            newCards[card_index].messages.push({
                 id: 0,
                 step: 0,
                 data: '',
@@ -80,22 +80,22 @@ export const addNewMessage = (
     let card_index = newCards.findIndex(i => i.id === card_id)
     if (card_index >= 0) {
         try {
-            let newMessage: AllMessage = type_message === 'button' && new_message ? new_message : createMessage(type_message, newCards[card_index].message.length)
-            let message_index = newCards[card_index].message.findIndex(i => i.id === message_id)
+            let newMessage: AllMessage = type_message === 'button' && new_message ? new_message : createMessage(type_message, newCards[card_index].messages.length)
+            let message_index = newCards[card_index].messages.findIndex(i => i.id === message_id)
             if (message_index > -1) {
-                newCards[card_index].message.splice(message_index + 1, 0, newMessage);
-                newCards[card_index].message.map((item, index) => {
+                newCards[card_index].messages.splice(message_index + 1, 0, newMessage);
+                newCards[card_index].messages.map((item, index) => {
                     item.id = index
                     item.step = index
                 })
                 store.setState({ ...store.state, cards: newCards })
             }
             else {
-                if (newCards[card_index].message.length === 0) {
-                    let firstMessage = createMessage('text', newCards[card_index].message.length + 1)
-                    newCards[card_index].message.push(firstMessage)
-                    newCards[card_index].message.push(newMessage)
-                    newCards[card_index].message.map((item, index) => {
+                if (newCards[card_index].messages.length === 0) {
+                    let firstMessage = createMessage('text', newCards[card_index].messages.length + 1)
+                    newCards[card_index].messages.push(firstMessage)
+                    newCards[card_index].messages.push(newMessage)
+                    newCards[card_index].messages.map((item, index) => {
                         item.id = index
                         item.step = index
                     })
@@ -122,14 +122,14 @@ export const changeMessage = (
     let newCards = [...store.state.cards]
     let card_index = newCards.findIndex(i => i.id === card_id)
     if (card_index >= 0) {
-        let message_index = newCards[card_index].message.findIndex(i => i.id === message_id)
+        let message_index = newCards[card_index].messages.findIndex(i => i.id === message_id)
         if (message_index >= 0) {
-            if (newCards[card_index].message[message_id].type_message === 'text') {
-                newCards[card_index].message[message_id].data = value
+            if (newCards[card_index].messages[message_id].type_message === 'text') {
+                newCards[card_index].messages[message_id].data = value
             }
-            if (newCards[card_index].message[message_id].type_message === 'button' && button) {
-                newCards[card_index].message[message_id] = {
-                    ...newCards[card_index].message[message_id],
+            if (newCards[card_index].messages[message_id].type_message === 'button' && button) {
+                newCards[card_index].messages[message_id] = {
+                    ...newCards[card_index].messages[message_id],
                     contentButton: [...button?.contentButton]
                 }
             }
@@ -150,7 +150,7 @@ export const addNewCard = (
     let newCards = [...store.state.cards]
     newCards.push({
         id: newCards.length,
-        message: [{
+        messages: [{
             id: 0,
             step: 0,
             data: '',
@@ -190,12 +190,12 @@ export const addPositionBtn = (
     let newCards = [...store.state.cards]
     let card_index = newCards.findIndex(i => i.id === card_id)
     if (card_index >= 0) {
-        let message_index = newCards[card_index].message.findIndex(i => i.id === message_id)
+        let message_index = newCards[card_index].messages.findIndex(i => i.id === message_id)
         if (message_index >= 0) {
-            if (newCards[card_index].message[message_id].type_message === 'button') {
-                let btnIndex = newCards[card_index].message[message_id].contentButton.findIndex((z: any) => z.id === item_id)
-                newCards[card_index].message[message_id].contentButton[btnIndex] = {
-                    ...newCards[card_index].message[message_id].contentButton[btnIndex],
+            if (newCards[card_index].messages[message_id].type_message === 'button') {
+                let btnIndex = newCards[card_index].messages[message_id].contentButton.findIndex((z: any) => z.id === item_id)
+                newCards[card_index].messages[message_id].contentButton[btnIndex] = {
+                    ...newCards[card_index].messages[message_id].contentButton[btnIndex],
                     offsetTop: offsetTop,
                     offsetWidth: offsetWidth,
                     offsetHeight: offsetHeight

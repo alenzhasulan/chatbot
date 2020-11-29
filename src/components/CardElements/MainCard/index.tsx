@@ -42,7 +42,7 @@ const MainCard: React.FC<{ data: CardProps, }> = ({ data }) => {
 
     const renderMessages = () => (
         <>
-            {card.data.message.length > 0 && card.data.message.map((item: AllMessage, index) => {
+            {card.data.messages.length > 0 && card.data.messages.map((item: AllMessage, index) => {
                 switch (item.type_message) {
                     case 'text':
                         return (

@@ -45,7 +45,7 @@ const Home: React.FC<{}> = ({ }) => {
 
     const [zoom, setZoom] = useState<number>(1)
 
-    const isEmptyCards = () => <MainCard data={{ id: 0, message: [], position: { x: 10, y: 10 } }} />
+    const isEmptyCards = () => <MainCard data={{ id: 0, messages: [], position: { x: 10, y: 10 } }} />
 
 
     const renderCards = () => (
@@ -64,7 +64,7 @@ const Home: React.FC<{}> = ({ }) => {
     const svgList = () => {
         let data: { startX: number, startY: number, endX: number, endY: number }[] = []
         globalState.cards.map((card) => {
-            card.message.map((message) => {
+            card.messages.map((message) => {
                 if (message.type_message === 'button') {
                     message.contentButton.map((btn) => {
                         if (btn.to_id !== null && btn.offsetHeight !== null && btn.offsetTop !== null && btn.offsetWidth !== null) {

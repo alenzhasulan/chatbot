@@ -48,7 +48,7 @@ const actions = {
 };
 const initialCard: CardProps = {
     id: 0,
-    message: [{
+    messages: [{
         id: 0,
         step: 0,
         data: '',
