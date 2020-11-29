@@ -19,7 +19,7 @@ export const BodyCard: React.FC<{
             onMouseMove={() => setInner(true)}
             onMouseLeave={() => setInner(false)}
             style={{ marginTop: '10px', }}>
-            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', boxShadow: inner ? 'grey 2px 2px 10px 0px' : 'white 0px 0px 0px 0px' }}>
                 {children}
                 {inner &&
                     <div style={{ marginRight: -80, paddingLeft: 30 }}>

@@ -38,23 +38,26 @@ export const View = styled.div`
 
 export const Zoomer = styled.div`
             position:absolute;
-            bottom:0;
-            right:0
+            bottom:20px;
+            right:20px;
+            z-index:10
         `;
 
 
 export const Card = styled.div`
-            margin-right: 56px;
-            padding: 16px;
-            background: #fff;
+            padding: 0px;
+            background: #e6e7f2;
             box-shadow: 0 1px 4px rgba(21,22,28,.1);
-            border-radius: 4px;
+            border-radius: 10px;
             width: 256px;
+            max-width:256px;
             box-sizing: border-box;
+            position: absolute;
+           
         `;
 export const TextArea = styled.textarea`
     border: 1px solid #f3f5f8;
-    background: #f3f5f8;
+    background: white;
     border-radius: 4px;
     outline: 0;
     width: 100%;
@@ -64,4 +67,22 @@ export const TextArea = styled.textarea`
     padding: 9px 11px;
     box-sizing: border-box;
     height:40px
+`
+
+export const ChatCard = styled.div`
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+margin-left: 40px;
+margin-right: 40px;
+margin-top: 15px;
+margin-bottom: 15px;
+padding: 15px;
+padding-left: 25px;
+padding-right: 25px;
+box-shadow: 0 1px 4px rgba(21,22,28,.1);
+background-color: white;
+align-items: center;
+border-radius: 4px;
+cursor: pointer
 `

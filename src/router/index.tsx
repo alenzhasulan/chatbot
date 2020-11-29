@@ -3,17 +3,17 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Layout from '../components/Layout/index'
 
 import Home from '../screens/Home/index'
-import Help from '../screens/Help/index'
+import Chats from '../screens/Chats/index'
 import Builder from '../screens/Builder/index'
 
 const AppRoute: React.FC = () => {
     return (
         <Router>
             <Layout>
-                <Switch>
-                    <Route exact path="/" component={Home} />
+                <Switch >
+                    <Route path="/chats" component={Chats} />
+                    <Route exact path="/chat" component={Home} />
                     <Route path="/builder/:id" component={Builder} />
-                    <Route path="/help" component={Help} />
                 </Switch>
             </Layout>
         </Router>

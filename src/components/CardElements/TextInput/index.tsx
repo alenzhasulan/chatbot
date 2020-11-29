@@ -14,7 +14,7 @@ const TextInput: React.FC<{
 
     const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
 
-        globalActions.addTextInCard(card_id, message_id, event.target.value)
+        globalActions.changeMessage(card_id, message_id, event.target.value)
         // setInput(card_id, message_id, event.target.value)
     };
 

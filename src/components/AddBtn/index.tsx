@@ -19,11 +19,17 @@ export const AddBtn: React.FC<{
     const [visibleDropdown, setVisibleDropdown] = useState(initialDropdown)
     useOutside(wrapperRef, setVisibleDropdown, visibleDropdown);
 
-    const onClick = (item: string) => {
-        globalActions.addEmptyMessage(item, card_id, message_id)
+    const onClick = (item: ReadingTypes) => {
+        if (item === 'button') {
+            globalActions.onClickModal(true, card_id, message_id, 'create')
+        }
+        else {
+            globalActions.addNewMessage(item, card_id, message_id)
+        }
+
     }
 
-    const list = ['text', 'video', 'image', 'button', 'gallery', 'input']
+    const list: Array<ReadingTypes> = ['text', 'video', 'image', 'button', 'gallery', 'input']
 
     return (
         <div ref={wrapperRef} style={{ display: 'flex', alignSelf: 'center', justifyContent: 'center', paddingTop: '10px' }}>
@@ -35,8 +41,7 @@ export const AddBtn: React.FC<{
             {visibleDropdown &&
                 <div style={{ position: 'absolute', width: 200, right: 0, paddingTop: 25, paddingLeft: 20, paddingRight: 20 }}>
                     <ListGroup >
-                        {}
-                        {list.map((item: string, index: number) =>
+                        {list.map((item: ReadingTypes, index: number) =>
                             <ListGroup.Item onClick={() => onClick(item)} style={{ cursor: 'pointer' }} variant="primary">{item}</ListGroup.Item>
                         )}
                     </ListGroup>
