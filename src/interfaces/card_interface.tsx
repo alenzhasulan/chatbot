@@ -4,6 +4,27 @@ export interface CardProps {
     position: Position
 }
 
+
+export interface Chat {
+    id: number,
+    name: String,
+    cards: Array<CardProps>
+}
+
+
+export interface UserCardProps {
+    id: number,
+    messages: Array<Video | Text | Image | Button | Gallery | Input>,
+    position: Position,
+    answer_user: ButtonContent | null
+}
+export interface UserChat {
+    id: number,
+    name: String,
+    cards: Array<UserCardProps>
+}
+
+
 export type Position = { x: number, y: number }
 
 export type ReadingTypes = 'text' | 'video' | 'image' | 'button' | 'gallery' | 'input';
@@ -13,6 +34,7 @@ export interface Message {
     step: number,
     [propName: string]: any;
     type_message: ReadingTypes,
+    child_id: number
 }
 
 export interface Text extends Message {

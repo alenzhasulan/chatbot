@@ -9,6 +9,7 @@ import {
     Gallery
 } from '../interfaces/card_interface'
 
+
 export const createMessage = (
     type_message: ReadingTypes,
     index: number,
@@ -19,11 +20,13 @@ export const createMessage = (
     switch (type_message) {
         case 'text':
             newMessage = {
-                id: index,
+                id: 0,
                 step: index,
                 data: value || '',
                 type_message: 'text',
-                type_content: 'question'
+                type_content: 'question',
+                child_id: 0,
+                url: null
             }
             break;
         case 'image':
@@ -32,7 +35,8 @@ export const createMessage = (
                 step: index + 1,
                 url: '',
                 type_message: 'image',
-                type_content: 'question'
+                type_content: 'question',
+                child_id: 0
             }
         case 'button':
             newMessage = {
@@ -40,7 +44,8 @@ export const createMessage = (
                 step: index + 1,
                 contentButton: [],
                 type_message: 'button',
-                type_content: 'answer'
+                type_content: 'answer',
+                child_id: 0
             }
         default:
             throw new Error(
@@ -93,3 +98,5 @@ export const drawCurve = (startX: number, startY: number, endX: number, endY: nu
 
     return path
 }
+
+

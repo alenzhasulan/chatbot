@@ -11,17 +11,16 @@ const TextInput: React.FC<{
 }> = ({ text, card_id, message_id }) => {
 
     const [globalState, globalActions] = useGlobal();
+    const [input, setInput] = useState(text.data);
 
     const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-
-        globalActions.changeMessage(card_id, message_id, event.target.value)
-        // setInput(card_id, message_id, event.target.value)
+        setInput(event.target.value)
     };
-
     return (
         <BodyCard card_id={card_id} message_id={message_id}>
             <TextArea
-                value={text.data}
+                onBlur={() => { globalActions.changeMessage(card_id, message_id, input) }}
+                value={input}
                 name="textAreaInput"
                 placeholder="Сообщение от бота"
                 onChange={(event) => handleChange(event)}

@@ -4,6 +4,7 @@ import { AddBtnView } from '../Styled'
 import { useOutside } from '../OutSide'
 import useGlobal from '../../store'
 import { ReadingTypes } from '../../interfaces/card_interface'
+import { getChatAPI, updateChatAPI } from '../../api';
 
 
 
@@ -19,12 +20,30 @@ export const AddBtn: React.FC<{
     const [visibleDropdown, setVisibleDropdown] = useState(initialDropdown)
     useOutside(wrapperRef, setVisibleDropdown, visibleDropdown);
 
+    const getList = async () => {
+        try {
+            const chat = {
+                ...globalState.chat,
+                cards: globalState.cards
+            }
+            const res = await updateChatAPI(chat)
+            console.log("RESSSSS ", res.data)
+            globalActions.setCards(res.data.cards);
+            globalActions.setChat(res.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const onClick = (item: ReadingTypes) => {
         if (item === 'button') {
             globalActions.onClickModal(true, card_id, message_id, 'create')
         }
         else {
             globalActions.addNewMessage(item, card_id, message_id)
+            // setTimeout(() => {
+            //     getList()
+            // }, 4500);
         }
 
     }

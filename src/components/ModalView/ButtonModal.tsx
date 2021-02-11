@@ -49,7 +49,7 @@ const Btn: React.FC<{
                     <Dropdown.Item onClick={async () => {
                         let i = globalState.cards.length
                         globalActions.addNewCard()
-                        onDropDown(item.id, i)
+                        // onDropDown(item.id, i)
 
                     }}>Создать новый шаг</Dropdown.Item>
                 </Dropdown.Menu>
@@ -73,20 +73,24 @@ const ButtonModal: React.FC<{}> = ({ }) => {
             id: 1,
             step: 1,
             contentButton: [],
+            child_id: 0
         }
         if (modal_type === 'create') {
             return list
         }
         else {
             if (typeof card_id === 'number' && typeof message_id === 'number') {
-                if (globalState.cards[card_id].messages[message_id].type_message === 'button') {
+                let card_index = globalState.cards.findIndex((i) => i.id === card_id)
+                let index = globalState.cards[card_index].messages.findIndex((i) => i.id === message_id)
+                if (globalState.cards[card_index].messages[index].type_message === 'button') {
                     let buttons: Button = {
                         type_message: 'button',
                         type_content: 'answer',
-                        id: globalState.cards[card_id].messages[message_id].id,
-                        step: globalState.cards[card_id].messages[message_id].step,
+                        id: globalState.cards[card_index].messages[index].id,
+                        step: globalState.cards[card_index].messages[index].step,
+                        child_id: globalState.cards[card_index].messages[index].child_id,
                         contentButton: [
-                            ...globalState.cards[card_id].messages[message_id].contentButton
+                            ...globalState.cards[card_index].messages[index].contentButton
                         ],
                     }
                     // globalState.cards[card_id].message[message_id]

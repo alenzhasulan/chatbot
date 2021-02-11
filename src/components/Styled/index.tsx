@@ -43,6 +43,21 @@ export const Zoomer = styled.div`
             z-index:10
         `;
 
+interface Props {
+    zIndex: any;
+}
+export const ChatViewer = styled.div<Props>`
+            position:absolute;
+            bottom:20px;
+            right:20px;
+            z-index:${p => p.zIndex};
+            width:300px;
+            height:450px;
+            background-color: #f5f5f5;
+            overflow-y: scroll;
+            border-radius:10px;
+        `;
+
 
 export const Card = styled.div`
             padding: 0px;

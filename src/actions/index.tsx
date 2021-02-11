@@ -10,12 +10,16 @@ import {
     Input,
     Gallery,
     Position,
-    AllMessage, ButtonInterface
+    AllMessage, ButtonInterface,
+    CardProps,
+    Chat
 
 } from '../interfaces/card_interface'
 
 import { createMessage } from '../utils'
+import { updateChatAPI } from '../api'
 
+import useGlobal from '../store'
 
 export const otherAction = (
     store: Store<MyState, MyAssociatedActions>,
@@ -40,6 +44,20 @@ export const onClickModal = (
     })
 };
 
+export const setChat = (
+    store: Store<MyState, MyAssociatedActions>,
+    chat: Chat
+) => {
+    store.setState({ ...store.state, chat: chat })
+};
+
+export const setCards = (
+    store: Store<MyState, MyAssociatedActions>,
+    cards: Array<CardProps>
+) => {
+    store.setState({ ...store.state, cards: cards })
+};
+
 
 export const removeEmptyMessage = (
     store: Store<MyState, MyAssociatedActions>,
@@ -51,57 +69,42 @@ export const removeEmptyMessage = (
     if (card_index >= 0) {
         let message_index = newCards[card_index].messages.findIndex(i => i.id === message_id)
         newCards[card_index].messages.splice(message_index, 1);
-        newCards[card_index].messages.map((item, index) => {
-            item.id = index
-            item.step = index
-        })
         if (newCards[card_index].messages.length === 0) {
-            newCards[card_index].messages.push({
-                id: 0,
-                step: 0,
-                data: '',
-                type_message: 'text',
-                type_content: 'question'
-            })
+            const message = createMessage('text', 0)
+            newCards[card_index].messages.push(message)
         }
         store.setState({ ...store.state, cards: newCards })
+        updateStateWithAPI(store, [...newCards])
     }
 }
 
 
-export const addNewMessage = (
+export const addNewMessage = async (
     store: Store<MyState, MyAssociatedActions>,
     type_message: ReadingTypes,
     card_id: number,
     message_id: number,
     new_message?: Button | ButtonInterface
-) => {
-    let newCards = [...store.state.cards]
-    let card_index = newCards.findIndex(i => i.id === card_id)
+): Promise<void> => {
+    const newCards = [...store.state.cards]
+    const card_index = newCards.findIndex(i => i.id === card_id)
     if (card_index >= 0) {
         try {
-            let newMessage: AllMessage = type_message === 'button' && new_message ? new_message : createMessage(type_message, newCards[card_index].messages.length)
-            let message_index = newCards[card_index].messages.findIndex(i => i.id === message_id)
+            const newMessage: AllMessage = type_message === 'button' && new_message ? new_message : createMessage(type_message, newCards[card_index].messages.length)
+            const message_index = newCards[card_index].messages.findIndex(i => i.id === message_id)
             if (message_index > -1) {
                 newCards[card_index].messages.splice(message_index + 1, 0, newMessage);
-                newCards[card_index].messages.map((item, index) => {
-                    item.id = index
-                    item.step = index
-                })
-                store.setState({ ...store.state, cards: newCards })
+                store.actions.setCards(newCards)
             }
             else {
                 if (newCards[card_index].messages.length === 0) {
                     let firstMessage = createMessage('text', newCards[card_index].messages.length + 1)
                     newCards[card_index].messages.push(firstMessage)
                     newCards[card_index].messages.push(newMessage)
-                    newCards[card_index].messages.map((item, index) => {
-                        item.id = index
-                        item.step = index
-                    })
                     store.setState({ ...store.state, cards: newCards })
                 }
             }
+            updateStateWithAPI(store, [...newCards])
 
         } catch (error) {
             // console.log("ERrrrrrr")
@@ -112,6 +115,22 @@ export const addNewMessage = (
 }
 
 
+export const updateStateWithAPI = async (
+    store: Store<MyState, MyAssociatedActions>,
+    arr: Array<CardProps>
+): Promise<void> => {
+    try {
+        const chat = {
+            ...store.state.chat,
+            cards: arr
+        }
+        const res = await updateChatAPI(chat);
+        store.setState({ ...store.state, cards: res.data.cards })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const changeMessage = (
     store: Store<MyState, MyAssociatedActions>,
     card_id: number,
@@ -121,25 +140,28 @@ export const changeMessage = (
 ) => {
     let newCards = [...store.state.cards]
     let card_index = newCards.findIndex(i => i.id === card_id)
+    console.log("chat ", store.state.chat)
     if (card_index >= 0) {
         let message_index = newCards[card_index].messages.findIndex(i => i.id === message_id)
         if (message_index >= 0) {
-            if (newCards[card_index].messages[message_id].type_message === 'text') {
-                newCards[card_index].messages[message_id].data = value
+            let messageIndex = newCards[card_index].messages.findIndex(i => i.id === message_id)
+            if (newCards[card_index].messages[messageIndex].type_message === "text") {
+                newCards[card_index].messages[messageIndex].data = value
             }
-            if (newCards[card_index].messages[message_id].type_message === 'button' && button) {
-                newCards[card_index].messages[message_id] = {
-                    ...newCards[card_index].messages[message_id],
+            if (newCards[card_index].messages[messageIndex].type_message === 'button' && button) {
+                newCards[card_index].messages[messageIndex] = {
+                    ...newCards[card_index].messages[messageIndex],
                     contentButton: [...button?.contentButton]
                 }
             }
         }
-        // else {
-        //     let length = newCards[card_index].message.length
-        //     let initial: Text = createMessage('text', length, value)
-        //     newCards[card_index].message.push(initial)
-        // }
+        else {
+            let length = newCards[card_index].messages.length
+            let initial: Text = createMessage('text', length, value)
+            newCards[card_index].messages.push(initial)
+        }
         store.setState({ ...store.state, cards: newCards })
+        updateStateWithAPI(store, [...newCards])
     }
 };
 
@@ -149,13 +171,14 @@ export const addNewCard = (
 ) => {
     let newCards = [...store.state.cards]
     newCards.push({
-        id: newCards.length,
+        id: 0,
         messages: [{
             id: 0,
             step: 0,
             data: '',
             type_message: 'text',
-            type_content: 'question'
+            type_content: 'question',
+            child_id: 0
         }],
         position: {
             x: 180 + 180 * (Math.floor(newCards.length / 5) + 1),
@@ -163,6 +186,7 @@ export const addNewCard = (
         }
     })
     store.setState({ ...store.state, cards: newCards })
+    updateStateWithAPI(store, [...newCards])
 };
 
 
@@ -171,10 +195,12 @@ export const movePostion = (
     position: Position,
     card_id: number
 ) => {
+    console.log("Change")
     let newCards = [...store.state.cards]
     let card_index = newCards.findIndex(i => i.id === card_id)
     newCards[card_index].position = position
     store.setState({ ...store.state, cards: newCards })
+    updateStateWithAPI(store, [...newCards])
 };
 
 
@@ -188,14 +214,19 @@ export const addPositionBtn = (
     offsetHeight: number
 ) => {
     let newCards = [...store.state.cards]
+
     let card_index = newCards.findIndex(i => i.id === card_id)
     if (card_index >= 0) {
         let message_index = newCards[card_index].messages.findIndex(i => i.id === message_id)
+        console.log('cqwerards ', newCards[card_index].messages[message_index])
+        console.log('message_index ', message_index)
+        console.log('card_index ', card_index)
         if (message_index >= 0) {
-            if (newCards[card_index].messages[message_id].type_message === 'button') {
-                let btnIndex = newCards[card_index].messages[message_id].contentButton.findIndex((z: any) => z.id === item_id)
-                newCards[card_index].messages[message_id].contentButton[btnIndex] = {
-                    ...newCards[card_index].messages[message_id].contentButton[btnIndex],
+
+            if (newCards[card_index].messages[message_index].type_message && newCards[card_index].messages[message_index].type_message === 'button') {
+                let btnIndex = newCards[card_index].messages[message_index].contentButton.findIndex((z: any) => z.id === item_id)
+                newCards[card_index].messages[message_index].contentButton[btnIndex] = {
+                    ...newCards[card_index].messages[message_index].contentButton[btnIndex],
                     offsetTop: offsetTop,
                     offsetWidth: offsetWidth,
                     offsetHeight: offsetHeight

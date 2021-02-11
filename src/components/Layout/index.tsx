@@ -7,10 +7,10 @@ const Layout: React.FC = (props) => {
         <>
             <Container fluid style={{ padding: 0 }}>
                 <Row style={{ maxWidth: "100%", margin: 0 }}>
-                    <Col sm={2} xs={2} style={{ padding: 0 }}>
+                    {/* <Col sm={2} xs={2} style={{ padding: 0 }}>
                         <NavMenu />
-                    </Col>
-                    <Col sm={10} xs={10} style={{ padding: 0, }}>
+                    </Col> */}
+                    <Col sm={12} xs={12} style={{ padding: 0, }}>
                         {props.children}
                     </Col>
                 </Row>

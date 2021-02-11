@@ -6,7 +6,7 @@ import useGlobal from '../../../store'
 
 import { Card } from '../../Styled'
 import { TextInput, ButtonList } from '../index'
-
+import { updateChatAPI } from '../../../api'
 
 export interface CardState {
     activeDrags: number,
@@ -16,10 +16,13 @@ export interface CardState {
 
 Modal.setAppElement('#root')
 
-const MainCard: React.FC<{ data: CardProps, }> = ({ data }) => {
-    console.log(data)
-    const [card, setCard] = useState<CardState>({ activeDrags: 0, data: data })
+const MainCard: React.FC<{ data: CardProps }> = ({ data }) => {
     const [globalState, globalActions] = useGlobal();
+    const [card, setCard] = useState<CardState>({ activeDrags: 0, data: data })
+
+
+
+
     const onStart = () => {
         let newActiveDrags: number = card.activeDrags
         setCard({ ...card, activeDrags: ++newActiveDrags, })
@@ -40,35 +43,37 @@ const MainCard: React.FC<{ data: CardProps, }> = ({ data }) => {
 
 
 
-    const renderMessages = () => (
-        <>
-            {card.data.messages.length > 0 && card.data.messages.map((item: AllMessage, index) => {
-                switch (item.type_message) {
-                    case 'text':
-                        return (
-                            <TextInput
-                                key={index}
-                                text={item}
-                                card_id={card.data.id}
-                                message_id={item.id}
-                            />
-                        )
-                    case 'button':
-                        return (
-                            <ButtonList
-                                key={index}
-                                buttons={item}
-                                card_id={card.data.id}
-                                message_id={item.id} />
-                        )
-                    default:
-                        break;
-                }
+    const renderMessages = () => {
+        return (
+            <>
+                {data.messages.length > 0 && data.messages.map((item: AllMessage, index) => {
+                    switch (item.type_message) {
+                        case 'text':
+                            return (
+                                <TextInput
+                                    text={item}
+                                    card_id={data.id}
+                                    message_id={item.id}
+                                    key={`${item.id}`}
+                                />
+                            )
+                        case 'button':
+                            return (
+                                <ButtonList
+                                    buttons={item}
+                                    card_id={data.id}
+                                    message_id={item.id}
+                                    key={index}
+                                />
+                            )
+                        default:
+                            break;
+                    }
 
-            })}
-        </>
-    );
-
+                })}
+            </>
+        );
+    }
 
 
 

@@ -1,60 +1,128 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
+import { Button, ButtonGroup } from 'react-bootstrap'
+import { useLocation } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
+
 import Header from '../../components/Header'
-import { MainContainer, WorkSpace, View, Zoomer } from '../../components/Styled'
+import { MainContainer, WorkSpace, View, Zoomer, ChatViewer } from '../../components/Styled'
 import { MainCard } from '../../components/CardElements'
 import background from '../../assets/background.png'
 import useGlobal from '../../store'
 import ModalView from '../../components/ModalView'
 import { drawCurve } from '../../utils'
-import { Button, ButtonGroup } from 'react-bootstrap'
-import { useLocation } from 'react-router-dom';
-import { getChatAPI } from '../../api'
+import { getChatAPI, updateChatAPI } from '../../api'
+import { CardProps, Chat } from '../../interfaces/card_interface';
+import { X } from 'react-bootstrap-icons';
 
+import MessageUser from '../Message'
 Modal.setAppElement('#root')
+
+
+
 
 const Home: React.FC<{}> = ({ }) => {
     const location = useLocation();
+    const history = useHistory();
+    const [globalState, globalActions] = useGlobal();
+    const { cards } = globalState;
 
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [list, setList] = useState<any[]>([]);
+
+    const [loading, setLoading] = useState(true);
+    const [isViewChat, setIsViewChat] = useState(false);
+    const [chatId, setChatId] = useState(0);
 
     useEffect(() => {
         const { chat_id } = location.state as any
         console.log(chat_id); // result: 'some_value'
+        setChatId(chat_id)
         getList(chat_id)
     }, [location]);
+
 
 
     const getList = async (chat_id: number) => {
         try {
             setLoading(true)
             const res = await getChatAPI(chat_id)
-            console.log(res)
-            setList(res.data)
+            globalActions.setCards(res.data.cards);
+            if (res.data.cards.length === 0) {
+                isCardNull(res.data)
+            }
+            else {
+                globalActions.setChat(res.data)
+            }
             setLoading(false)
         } catch (error) {
+        }
+    }
+
+    const isCardNull = async (data: Chat) => {
+        const chat = {
+            ...data,
+            cards: [
+                {
+                    id: 0,
+                    step: 0,
+                    messages: [
+                        {
+                            id: 0,
+                            step: 0,
+                            type_message: "text",
+                            type_content: "question",
+                            data: "",
+                            url: null,
+                            child_id: 0
+                        }
+                    ],
+                    position: {
+                        x: 100.0,
+                        y: 100.0
+                    }
+                }
+            ]
+        }
+        try {
+            const res = await updateChatAPI(chat);
+            globalActions.setChat(res.data)
+        } catch (error) {
             console.log(error)
-            setError(error.response)
         }
     }
 
 
-    const [globalState, globalActions] = useGlobal();
 
     const [zoom, setZoom] = useState<number>(1)
 
-    const isEmptyCards = () => <MainCard data={{ id: 0, messages: [], position: { x: 10, y: 10 } }} />
+    const isEmptyCards = () => (
+        <MainCard data={{
+            id: 0,
+            messages: [
+                {
+                    id: 0,
+                    step: 0,
+                    type_message: "text",
+                    type_content: "question",
+                    data: "",
+                    url: null,
+                    child_id: 0
+                }
+            ],
+            position: { x: 10, y: 10 }
+        }} key={0} />
+    )
 
 
-    const renderCards = () => (
-        <>
-            {globalState.cards.length > 0 && globalState.cards.map((item, index) => (
-                <MainCard data={item} key={index} />
-            ))}
-        </>
-    );
+    const renderCards = () => {
+        console.log("I give cards ", cards)
+        return (
+            <>
+                {cards.length > 0 && cards.map((item, index) => (
+                    <MainCard data={item} key={item.id} />
+                ))}
+            </>
+        );
+    }
 
     const renderSVG = (startX: number, startY: number, endX: number, endY: number) => {
         let d = drawCurve(startX, startY, endX, endY)
@@ -67,14 +135,19 @@ const Home: React.FC<{}> = ({ }) => {
             card.messages.map((message) => {
                 if (message.type_message === 'button') {
                     message.contentButton.map((btn) => {
+
                         if (btn.to_id !== null && btn.offsetHeight !== null && btn.offsetTop !== null && btn.offsetWidth !== null) {
-                            let itemSVG = {
-                                endX: globalState.cards[btn.to_id].position.x - 45,
-                                endY: globalState.cards[btn.to_id].position.y,
-                                startY: card.position.y + btn.offsetTop - btn.offsetHeight / 2,
-                                startX: card.position.x + btn.offsetWidth
+                            let btnIndex = globalState.cards.findIndex(x => x.id === btn.to_id)
+                            if (btnIndex > -1) {
+                                let itemSVG = {
+                                    endX: globalState.cards[btnIndex].position.x - 45,
+                                    endY: globalState.cards[btnIndex].position.y,
+                                    startY: card.position.y + btn.offsetTop - btn.offsetHeight / 2,
+                                    startX: card.position.x + btn.offsetWidth
+                                }
+                                data.push(itemSVG)
                             }
-                            data.push(itemSVG)
+
                         }
                     })
                 }
@@ -85,13 +158,18 @@ const Home: React.FC<{}> = ({ }) => {
 
     return (
         <MainContainer >
-            <Header title={'Редактирование чата'} />
+            <Header
+                title={'Редактирование чата'}
+                onBack={() => history.goBack()}
+                onRihgt={() => setIsViewChat(true)}
+            />
+
             <WorkSpace style={{ background: 'rgb(230 238 246)', }}>
                 <View style={{ transform: `scale(${zoom})`, padding: '40px', zIndex: 2 }}>
-                    {globalState.cards.length !== 0 ? renderCards() : isEmptyCards()}
+                    {!loading && globalState.cards.length > 0 ? renderCards() : globalState.cards.length === 0 ? isEmptyCards() : null}
                     <svg height="5000" width="5000" style={{ padding: '40px', }}>
                         <marker id="arrow" markerWidth="20" markerHeight="20" refX="16" refY="8" orient="auto" markerUnits="userSpaceOnUse" style={{ fill: 'rgb(37 53 74)' }}><polyline points="0,0 20,8 0,16 4,8"></polyline></marker>
-                        {svgList().map((item) =>
+                        {!loading && svgList().map((item) =>
                             renderSVG(item.startX, item.startY, item.endX, item.endY)
                         )}
                     </svg>
@@ -103,6 +181,12 @@ const Home: React.FC<{}> = ({ }) => {
                         <Button onClick={() => setZoom(zoom + 0.1)} style={{ backgroundColor: 'white', color: 'black' }} variant="secondary">+</Button>
                     </ButtonGroup>
                 </Zoomer>
+                <ChatViewer zIndex={isViewChat ? 15 : -15}>
+                    <div style={{ cursor: 'pointer' }} onClick={() => setIsViewChat(false)} >
+                        <X style={{ position: 'absolute', right: 10, }} size={24} />
+                    </div>
+                    <MessageUser isViewChat={isViewChat} chatId={chatId} />
+                </ChatViewer>
             </WorkSpace>
 
             <Modal
