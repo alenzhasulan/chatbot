@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/chatbot/static/css/main.67c3a66b.chunk.css",
-    "main.js": "/chatbot/static/js/main.7535e5ce.chunk.js",
-    "main.js.map": "/chatbot/static/js/main.7535e5ce.chunk.js.map",
-    "runtime-main.js": "/chatbot/static/js/runtime-main.253fb56a.js",
-    "runtime-main.js.map": "/chatbot/static/js/runtime-main.253fb56a.js.map",
-    "static/css/2.d9ad5f5c.chunk.css": "/chatbot/static/css/2.d9ad5f5c.chunk.css",
-    "static/js/2.0c306944.chunk.js": "/chatbot/static/js/2.0c306944.chunk.js",
-    "static/js/2.0c306944.chunk.js.map": "/chatbot/static/js/2.0c306944.chunk.js.map",
-    "index.html": "/chatbot/index.html",
-    "precache-manifest.2faee5dd05f7e97d47f37a9e33aaf587.js": "/chatbot/precache-manifest.2faee5dd05f7e97d47f37a9e33aaf587.js",
-    "service-worker.js": "/chatbot/service-worker.js",
-    "static/css/2.d9ad5f5c.chunk.css.map": "/chatbot/static/css/2.d9ad5f5c.chunk.css.map",
-    "static/css/main.67c3a66b.chunk.css.map": "/chatbot/static/css/main.67c3a66b.chunk.css.map",
-    "static/js/2.0c306944.chunk.js.LICENSE.txt": "/chatbot/static/js/2.0c306944.chunk.js.LICENSE.txt"
+    "main.css": "/chats/static/css/main.67c3a66b.chunk.css",
+    "main.js": "/chats/static/js/main.3a86b450.chunk.js",
+    "main.js.map": "/chats/static/js/main.3a86b450.chunk.js.map",
+    "runtime-main.js": "/chats/static/js/runtime-main.197c4332.js",
+    "runtime-main.js.map": "/chats/static/js/runtime-main.197c4332.js.map",
+    "static/css/2.d9ad5f5c.chunk.css": "/chats/static/css/2.d9ad5f5c.chunk.css",
+    "static/js/2.d7192d0f.chunk.js": "/chats/static/js/2.d7192d0f.chunk.js",
+    "static/js/2.d7192d0f.chunk.js.map": "/chats/static/js/2.d7192d0f.chunk.js.map",
+    "index.html": "/chats/index.html",
+    "precache-manifest.915f174a64bda873e01f5f127169516d.js": "/chats/precache-manifest.915f174a64bda873e01f5f127169516d.js",
+    "service-worker.js": "/chats/service-worker.js",
+    "static/css/2.d9ad5f5c.chunk.css.map": "/chats/static/css/2.d9ad5f5c.chunk.css.map",
+    "static/css/main.67c3a66b.chunk.css.map": "/chats/static/css/main.67c3a66b.chunk.css.map",
+    "static/js/2.d7192d0f.chunk.js.LICENSE.txt": "/chats/static/js/2.d7192d0f.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.253fb56a.js",
+    "static/js/runtime-main.197c4332.js",
     "static/css/2.d9ad5f5c.chunk.css",
-    "static/js/2.0c306944.chunk.js",
+    "static/js/2.d7192d0f.chunk.js",
     "static/css/main.67c3a66b.chunk.css",
-    "static/js/main.7535e5ce.chunk.js"
+    "static/js/main.3a86b450.chunk.js"
   ]
 }
