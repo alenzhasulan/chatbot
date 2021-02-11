@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/chatbot/static/css/main.67c3a66b.chunk.css",
+    "main.js": "/chatbot/static/js/main.5e60163f.chunk.js",
+    "main.js.map": "/chatbot/static/js/main.5e60163f.chunk.js.map",
+    "runtime-main.js": "/chatbot/static/js/runtime-main.253fb56a.js",
+    "runtime-main.js.map": "/chatbot/static/js/runtime-main.253fb56a.js.map",
+    "static/css/2.d9ad5f5c.chunk.css": "/chatbot/static/css/2.d9ad5f5c.chunk.css",
+    "static/js/2.0c306944.chunk.js": "/chatbot/static/js/2.0c306944.chunk.js",
+    "static/js/2.0c306944.chunk.js.map": "/chatbot/static/js/2.0c306944.chunk.js.map",
+    "index.html": "/chatbot/index.html",
+    "precache-manifest.b3a4995be501bf37207e385719492db4.js": "/chatbot/precache-manifest.b3a4995be501bf37207e385719492db4.js",
+    "service-worker.js": "/chatbot/service-worker.js",
+    "static/css/2.d9ad5f5c.chunk.css.map": "/chatbot/static/css/2.d9ad5f5c.chunk.css.map",
+    "static/css/main.67c3a66b.chunk.css.map": "/chatbot/static/css/main.67c3a66b.chunk.css.map",
+    "static/js/2.0c306944.chunk.js.LICENSE.txt": "/chatbot/static/js/2.0c306944.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.253fb56a.js",
+    "static/css/2.d9ad5f5c.chunk.css",
+    "static/js/2.0c306944.chunk.js",
+    "static/css/main.67c3a66b.chunk.css",
+    "static/js/main.5e60163f.chunk.js"
+  ]
+}
