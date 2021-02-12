@@ -1,10 +1,10 @@
 import axios from 'axios'
 
 
-let token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGVuIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTYxMzA2MzkyNCwiZXhwIjoxNjEzMDY3NTI0fQ.U35Te92tzsl-FnkKznzZWlbeQ1gfQFjoHgmDxv6oetk'
+let token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGVuIiwicm9sZXMiOltdLCJpYXQiOjE2MTMwNzEyODIsImV4cCI6MTYxMzA3NDg4Mn0.iHnjynWJCvDjNxZ2XlsLImxiLsGoXI1JR9OAX1d1qHc'
 axios.defaults.headers['Access-Control-Allow-Origin'] = "*"
 axios.defaults.headers['Authorization'] = 'Bearer ' + token
-const endPoint = 'http://localhost:8181/api/v1/'
+const endPoint = 'http://188.227.107.45/api/v1/'
 
 
 export const getChatsAPI = () => {
